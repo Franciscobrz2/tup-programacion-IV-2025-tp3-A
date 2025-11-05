@@ -3,7 +3,7 @@ import cors from "cors";
 import { conectarDB } from "./config/db.js";
 import usuarioRouter from "./modules/usuario/usuarioRoutes.js";
 import alumnoRouter from "./modules/alumno/alumnoRoutes.js";
-
+import materiaRouter from "./modules/materia/materiaRoutes.js";
 conectarDB();
 
 const app = express();
@@ -16,7 +16,7 @@ app.use(express.json());
 
 app.use("/api/usuarios", usuarioRouter);
 app.use("/api/alumnos", alumnoRouter);
-app.use("/api/materias", usuarioRouter);
+app.use("/api/materias", materiaRouter);
 app.use("/api/notas", usuarioRouter);
 
 
