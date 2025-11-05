@@ -1,0 +1,29 @@
+@url = http://localhost:3000/api/materias
+
+### Obtener materias
+GET {{url}}
+
+### Obtener por id
+GET {{url}}/1
+### Crear materias
+POST {{url}}
+Content-Type: application/json
+
+{   
+    "nombre": "Matematica discreta",
+    "codigo": "w23as4oko21",
+    "año": "2025/11/23"
+}
+
+### Actualizar materias
+PUT {{url}}/1
+Content-Type: application/json
+
+{   
+    "nombre": "Matematica discreta II",
+    "codigo": "w234oko21",
+    "año": "2025-11-24"
+}
+### Eliminar materias
+DELETE {{url}}/2
+
