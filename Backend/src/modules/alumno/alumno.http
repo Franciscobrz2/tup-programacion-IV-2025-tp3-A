@@ -1,0 +1,29 @@
+@url = http://localhost:3000/api/alumnos
+
+### Obtener alumnos
+GET {{url}}
+
+### Obtener por id
+GET {{url}}/1
+### Crear alumnos
+POST {{url}}
+Content-Type: application/json
+
+{   
+    "nombre": "Julian",
+    "apellido": "Alvarez",
+    "dni": 504053491
+}
+
+### Actualizar alumnos
+PUT {{url}}/1
+Content-Type: application/json
+
+{   
+    "nombre": "Julian ivan",
+    "apellido": "Alvarez",
+    "dni": 50405343
+}
+### Eliminar alumnos
+DELETE {{url}}/2
+
