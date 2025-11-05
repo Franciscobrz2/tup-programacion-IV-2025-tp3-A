@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import { conectarDB } from "./config/db.js";
 import usuarioRouter from "./modules/usuario/usuarioRoutes.js";
+import alumnoRouter from "./modules/alumno/alumnoRoutes.js";
+
 conectarDB();
 
 const app = express();
@@ -13,7 +15,7 @@ app.use(cors())
 app.use(express.json());
 
 app.use("/api/usuarios", usuarioRouter);
-app.use("/api/alumnos", usuarioRouter);
+app.use("/api/alumnos", alumnoRouter);
 app.use("/api/materias", usuarioRouter);
 app.use("/api/notas", usuarioRouter);
 
