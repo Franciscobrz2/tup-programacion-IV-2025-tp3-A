@@ -1,0 +1,33 @@
+@url = http://localhost:3000/api/notas
+
+### Obtener notas
+GET {{url}}
+
+### Obtener por id
+GET {{url}}/1
+### Crear notas
+POST {{url}}
+Content-Type: application/json
+
+{   
+    "alumno_id": 2,
+    "materia_id": 1,
+    "nota1": 7,
+    "nota2": 9,
+    "nota3": 10
+}
+
+### Actualizar notas
+PUT {{url}}/3
+Content-Type: application/json
+
+{   
+    "alumno_id": 1,
+    "materia_id": 1,
+    "nota1": 10,
+    "nota2": 9,
+    "nota3": 10
+}
+### Eliminar notas
+DELETE {{url}}/2
+
