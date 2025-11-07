@@ -1,0 +1,14 @@
+@url=http://localhost:3000/api/auth/login
+
+### Login
+# @name login
+POST {{url}}
+Content-Type: application/json
+
+{
+    "email": "fran1@outlook.com",
+    "password": "Fran123!"
+}
+
+###
+# @token = {{login.response.body.token}}
