@@ -1,0 +1,39 @@
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* ya lo controlas con JS también */
+  padding: 2rem;
+}
+
+/* Formulario más estrecho y con espaciado */
+form {
+  width: 100%;
+  max-width: 400px;
+  background: var(--pico-background-color);
+  padding: 2rem;
+  border-radius: var(--pico-border-radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Espaciado entre inputs */
+input,
+fieldset,
+button {
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+/* Centrar el título */
+h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Centrar el label del checkbox */
+fieldset label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
