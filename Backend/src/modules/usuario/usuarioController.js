@@ -6,7 +6,7 @@ export async function getAllUsuarios (req, res) {
     const [resultUsuario] = await db.execute("SELECT id, nombre, email FROM usuario");
 
     res.json({
-        succes: true,
+        success: true,
         usuarios: resultUsuario
     });
 
@@ -27,7 +27,7 @@ export async function getUsuariosById (req, res) {
     }
 
     res.json({
-        succes: true,
+        success: true,
         usuarios: resultUsuario
     })
 
@@ -36,7 +36,7 @@ export async function getUsuariosById (req, res) {
 export async function createUsuario (req, res) {
     const { nombre, email, password } = req.body
     
-    const password_hash = await bcrypt.hash(password, 9);
+    const password_hash = await bcrypt.hash(password, 14);
 
     const [resultUsuario] = await db.execute("INSERT INTO usuario (nombre, email, password_hash) VALUES(?, ?, ?)" ,[
         nombre, email, password_hash
@@ -50,7 +50,7 @@ export async function createUsuario (req, res) {
     }
 
     res.json({
-        succes: true,
+        success: true,
         message: "Usuario creado creado con exito."
     });
 
@@ -83,7 +83,7 @@ export async function updateUsuario (req, res) {
     }
 
     res.json({
-        succes: true,
+        success: true,
         message: "Usuario actualizado con exito."
     });
 
@@ -104,7 +104,7 @@ export async function deleteUsuario (req, res) {
     }
 
     res.json({
-        succes: true,
+        success: true,
         message: `Se elimino el usuario con el id ${id}.`
     });
 
