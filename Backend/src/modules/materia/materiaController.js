@@ -2,11 +2,13 @@ import { db } from "../../config/db.js";
 
 export async function getAllMaterias (req, res) {
     const filter = req.query.filter;
-    const [resultMateria] = await db.execute("SELECT * FROM materia");
+    const [resultMateria, tabla] = await db.execute("SELECT * FROM materia");
 
+    const columnasMateria = tabla.map( t => t.name)
     res.json({
-        succes: true,
-        materias: resultMateria
+        success: true,
+        materias: resultMateria,
+        columnasMateria
     });
 
 }
@@ -26,7 +28,7 @@ export async function getMateriaById (req, res) {
     }
 
     res.json({
-        succes: true,
+        success: true,
         materias: resultMateria
     })
 
@@ -49,7 +51,7 @@ export async function createMateria (req, res) {
     }
 
     res.json({
-        succes: true,
+        success: true,
         data: {id: resultMateria.insertId, nombre, codigo, año},
         message: "Materia creada con exito."
     });
@@ -75,7 +77,7 @@ export async function updateMateria (req, res) {
     }
 
     res.json({
-        succes: true,
+        success: true,
         data: {id, nombre, codigo, año},
         message: "Materia actualizada con exito."
     });
@@ -97,7 +99,7 @@ export async function deleteMateria (req, res) {
     }
 
     res.json({
-        succes: true,
+        success: true,
         message: `Se elimino la materia con el id ${id}.`
     });
 

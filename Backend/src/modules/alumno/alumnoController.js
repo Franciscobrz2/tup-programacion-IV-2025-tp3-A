@@ -2,11 +2,16 @@ import { db } from "../../config/db.js";
 
 export async function getAllAlumnos (req, res) {
     const filter = req.query.filter;
-    const [resultAlumno] = await db.execute("SELECT * FROM alumno");
+    const [resultAlumno, tabla] = await db.execute("SELECT * FROM alumno");
+   
+    const columnasAlumno = tabla.map(t => {
+        return t.name
+    })
 
     res.json({
-        succes: true,
-        alumnos: resultAlumno
+        success: true,
+        alumnos: resultAlumno,
+        columnasAlumno
     });
 
 }
@@ -26,7 +31,7 @@ export async function getAlumnosById (req, res) {
     }
 
     res.json({
-        succes: true,
+        success: true,
         alumnos: resultAlumno
     })
 
@@ -49,7 +54,7 @@ export async function createAlumno (req, res) {
     }
 
     res.json({
-        succes: true,
+        success: true,
         data: {id: resultAlumno.insertId, nombre, apellido, dni},
         message: "Alumno creado creado con exito."
     });
@@ -75,7 +80,7 @@ export async function updateAlumno (req, res) {
     }
 
     res.json({
-        succes: true,
+        success: true,
         data: {id, nombre, apellido, dni},
         message: "Alumno actualizado con exito."
     });
@@ -97,7 +102,7 @@ export async function deleteAlumno (req, res) {
     }
 
     res.json({
-        succes: true,
+        success: true,
         message: `Se elimino el alumno con el id ${id}.`
     });
 

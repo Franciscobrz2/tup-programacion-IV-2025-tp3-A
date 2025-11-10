@@ -2,11 +2,13 @@ import { db } from "../../config/db.js";
 
 export async function getAllNotas (req, res) {
     const filter = req.query.filter;
-    const [resultNota] = await db.execute("SELECT * FROM nota");
+    const [resultNota, tabla] = await db.execute("SELECT * FROM nota");
+    const columnasNota = tabla.map( t => t.name)
 
     res.json({
-        succes: true,
-        notas: resultNota
+        success: true,
+        notas: resultNota,
+        columnasNota
     });
 
 }
@@ -26,7 +28,7 @@ export async function getNotaById (req, res) {
     }
 
     res.json({
-        succes: true,
+        success: true,
         notas: resultNota
     })
 
@@ -62,7 +64,7 @@ export async function createNota (req, res) {
     }
 
     res.json({
-        succes: true,
+        success: true,
         data: {id: resultNota.insertId, alumno_id, materia_id, nota1, nota2, nota3},
         message: "Nota creada con exito."
     });
@@ -99,7 +101,7 @@ export async function updateNota (req, res) {
     }
 
     res.json({
-        succes: true,
+        success: true,
         data: {id, alumno_id, materia_id, nota1, nota2, nota3},
         message: "Nota actualizada con exito."
     });
@@ -121,7 +123,7 @@ export async function deleteNota (req, res) {
     }
 
     res.json({
-        succes: true,
+        success: true,
         message: `Se elimino la nota con el id ${id}.`
     });
 
