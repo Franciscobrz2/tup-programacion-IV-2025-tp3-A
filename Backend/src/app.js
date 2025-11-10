@@ -27,7 +27,7 @@ app.use("/api/auth/login", authRouter);
 //para recurso no existente
 app.use((req,res) => {
   res.status(404).json({
-    succes: false,
+    success: false,
     message: `404 Not Found. Recurso (${req.method} ${req.hostname}${req.path})no encontrado.`
   })
 })
