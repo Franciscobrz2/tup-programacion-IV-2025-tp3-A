@@ -1,10 +1,10 @@
-import { Alumnos } from "../../components/Alumnos/Alumnos";
+import { NotasPage } from "../NotasPage/NotasPage";
 import { LoginPage } from "../Auth/LoginPage";
 
 export const HomePage = () => {
-    const autenticado = false
+    const autenticado = true
 
     return(
-        !autenticado ? <LoginPage/>:<Alumnos/>
+        !autenticado ? <LoginPage/>:<NotasPage/>
     );
 }
