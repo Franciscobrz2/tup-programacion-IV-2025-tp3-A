@@ -52,8 +52,7 @@ export async function authLogin (req, res) {
   // Generar jwt
   const payload = { 
     userId: usuarios[0].id, 
-    nombre: usuarios[0].nombre, 
-    email: usuarios[0].email 
+    nombre: usuarios[0].nombre,  
   };
 
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
