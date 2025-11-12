@@ -24,7 +24,7 @@ export const AuthProvider = ({children}) => {
                 throw new Error(session.error);
             }
 
-            setToken(!session.token);
+            setToken(session.token);
             setNombre(session.nombre);
             return { success: true};
         }catch(err){
