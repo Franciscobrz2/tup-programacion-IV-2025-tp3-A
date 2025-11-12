@@ -19,9 +19,12 @@ export async function getAllAlumnos (req, res) {
 export async function getAlumnosById (req, res) {
     const id = Number(req.params.id);
 
-    const [resultAlumno] = await db.execute("SELECT * FROM alumno WHERE id = ?" ,[
+    const [resultAlumno, tabla] = await db.execute("SELECT * FROM alumno WHERE id = ?" ,[
         id
     ]);
+    const columnasAlumno = tabla.map(t => {
+        return t.name
+    })
 
     if(resultAlumno.length === 0){
         return res.status(400).json({
@@ -32,7 +35,8 @@ export async function getAlumnosById (req, res) {
 
     res.json({
         success: true,
-        alumnos: resultAlumno
+        alumnos: resultAlumno,
+        columnasAlumno
     })
 
 }

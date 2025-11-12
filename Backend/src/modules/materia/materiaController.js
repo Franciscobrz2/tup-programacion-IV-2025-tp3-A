@@ -16,10 +16,12 @@ export async function getAllMaterias (req, res) {
 export async function getMateriaById (req, res) {
     const id = Number(req.params.id);
 
-    const [resultMateria] = await db.execute("SELECT * FROM materia WHERE id = ?" ,[
+    const [resultMateria, tabla] = await db.execute("SELECT * FROM materia WHERE id = ?" ,[
         id
     ]);
-
+    const columnasMateria = tabla.map(t => {
+        return t.name
+    })
     if(resultMateria.length === 0){
         return res.status(400).json({
             success: false,
@@ -29,7 +31,8 @@ export async function getMateriaById (req, res) {
 
     res.json({
         success: true,
-        materias: resultMateria
+        materias: resultMateria,
+        columnasMateria
     })
 
 }

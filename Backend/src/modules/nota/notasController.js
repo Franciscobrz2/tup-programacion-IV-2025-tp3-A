@@ -16,9 +16,13 @@ export async function getAllNotas (req, res) {
 export async function getNotaById (req, res) {
     const id = Number(req.params.id);
 
-    const [resultNota] = await db.execute("SELECT * FROM nota WHERE id = ?" ,[
+    const [resultNota, tabla] = await db.execute("SELECT * FROM nota WHERE id = ?" ,[
         id
     ]);
+
+    const columnasNota = tabla.map(t => {
+        return t.name
+    })
 
     if(resultNota.length === 0){
         return res.status(400).json({
@@ -29,7 +33,8 @@ export async function getNotaById (req, res) {
 
     res.json({
         success: true,
-        notas: resultNota
+        notas: resultNota,
+        columnasNota
     })
 
 }
