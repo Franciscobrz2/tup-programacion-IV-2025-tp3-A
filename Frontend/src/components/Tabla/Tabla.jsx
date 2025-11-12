@@ -1,5 +1,5 @@
-
-export default function Tabla({ columnas, lista }) {
+import { Link } from "react-router";
+export default function Tabla({ columnas, lista, handleQuitar }) {
 
   return (
     <table>
@@ -14,8 +14,17 @@ export default function Tabla({ columnas, lista }) {
         {lista.map((item) => (
           <tr key={item.id}>
             {columnas.map(col => (
-              <td key={col.key}>{item[col.key]}</td>
+              <td key={col.key}>{item[col.key]} 
+                
+              </td>
             ))}
+            <td>
+              <Link role="button" to={`/usuarios/${item.id}/modificar`}>
+                Modificar
+              </Link>
+              <button onClick={() => handleQuitar(item.id)}>Quitar</button>
+                 
+            </td>
           </tr>
         ))}
       </tbody>
