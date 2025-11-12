@@ -1,0 +1,41 @@
+/* Contenedor principal del HomePage */
+.homepage-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center; 
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Imagen principal */
+.homepage-logo {
+  width: 150px;
+  height: auto;
+  margin: 1.5rem 0;
+  object-fit: contain;
+}
+
+/* Título principal */
+.homepage-container h1 {
+  margin-bottom: 1rem;
+}
+
+/* Subtítulo y texto */
+.homepage-content {
+  text-align: justify;
+  line-height: 1.6;
+}
+
+/* Opcional: estilos responsivos */
+@media (max-width: 600px) {
+  .homepage-logo {
+    width: 100px;
+  }
+
+  .homepage-container {
+    padding: 1rem;
+  }
+}
