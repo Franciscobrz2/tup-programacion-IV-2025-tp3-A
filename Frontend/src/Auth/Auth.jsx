@@ -48,10 +48,25 @@ export const AuthProvider = ({children}) => {
             nombre, 
             login, 
             logout,
-            isAuthenticated: !!token,
+            isAuthenticated: !token,
             fetchAuth,
         }}>
             {children}
         </authContext.Provider>
     );
 } 
+
+export const AuthPage = ({children}) => {
+    const {isAuthenticated} = useAuth();
+    if(!isAuthenticated){
+        return <h4>Ingrese para ver esta pagina</h4>
+    }
+    return children;
+}
+export const ProtectedComponents = ({children}) => {
+    const {isAuthenticated} = useAuth();
+    if(!isAuthenticated){
+        return null
+    }
+    return children;
+}
