@@ -1,13 +1,17 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import "@picocss/pico";
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router";
 import { Layout } from "./components/Layout/Layout.jsx";
-import { HomePage } from './pages/homePage/HomePage';
+import { HomePage } from './pages/HomePage/HomePage';
 import { AuthProvider } from './Auth/Auth.jsx';
 import { AlumnosPage } from './pages/AlumnosPage/AlumnosPage.jsx';
 import { MateriasPage } from './pages/MateriasPage/MateriasPage.jsx';
 import { NotasPage } from './pages/NotasPage/NotasPage.jsx';
+import { AuthPage } from './Auth/Auth.jsx';
+import { LoginPage } from './pages/Auth/LoginPage.jsx';
+import { Modificar } from './components/Modificar/Modificar.jsx';
+
 createRoot(document.getElementById('root')).render(
   <AuthProvider>
      <StrictMode>
@@ -15,13 +19,45 @@ createRoot(document.getElementById('root')).render(
         <Routes>
           <Route path='/' element={<Layout/>}> 
             <Route index element={<HomePage/>}/>
-            <Route path="/alumnos" element={<AlumnosPage/>}/>
-            <Route path="/materias" element={<MateriasPage/>}/>
-            <Route path="/notas" element={<NotasPage/>}/>
+            <Route path='/login' element={<LoginPage/>}/>
+            
+            <Route
+              path="/alumnos" 
+              element={
+                <AuthPage>
+                  <AlumnosPage/>
+                </AuthPage>
+              }
+            />
+            <Route 
+              path="/materias" 
+              element={
+                <AuthPage>
+                  <MateriasPage/>
+                </AuthPage>
+              }
+            />
+            <Route 
+              path="/notas" 
+              element={
+                <AuthPage>
+                  <NotasPage/>
+                </AuthPage>
+              }
+            />
+            <Route 
+              path="/:ruta/:id/modificar"
+              element={
+                <AuthPage>
+                  <Modificar/>
+                </AuthPage>
+              }
+            >
+            </Route>
           </Route>
    
         </Routes>
       </BrowserRouter>
-    </StrictMode>,
+    </StrictMode>
   </AuthProvider>
 )
