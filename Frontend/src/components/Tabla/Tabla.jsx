@@ -1,5 +1,9 @@
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
+
 export default function Tabla({ columnas, lista, handleQuitar }) {
+  const {pathname} = useLocation();
+  console.log("->",location.href)
+  const ruta = `http://localhost:5173${pathname}`
 
   return (
     <table>
@@ -19,7 +23,7 @@ export default function Tabla({ columnas, lista, handleQuitar }) {
               </td>
             ))}
             <td>
-              <Link role="button" to={`/usuarios/${item.id}/modificar`}>
+              <Link role="button" to={`${ruta}/${item.id}/modificar`}>
                 Modificar
               </Link>
               <button onClick={() => handleQuitar(item.id)}>Quitar</button>
