@@ -3,6 +3,7 @@ import { dominio } from "../utils/dominio";
 const url = dominio + "/usuarios"
 
 export default function useUsuarios () {
+    const [errores, setErrores] = useState(null)
     
     const getUsuarios = async () => {
         try {
@@ -42,18 +43,19 @@ export default function useUsuarios () {
             const response = await fetch(url,{
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ usuario }),
+                body: JSON.stringify(usuario),
             });
             
             const usuarios = await response.json();
-
-            if(!usuarios.ok ){
+            
+            if(!usuarios.success ){
+                setErrores(usuarios.errors)
                 throw Error("Error al crear usuarios.")
             }
 
             return usuarios;
         } catch (err) {
-            return {success: false};
+            return {success: false, err};
         }
     };
 
@@ -95,5 +97,5 @@ export default function useUsuarios () {
         }
     }; 
 
-    return {getUsuarios, getUsuariosById, postUsuarios, putUsuarios, deleteUsuarios}
+    return {getUsuarios, getUsuariosById, postUsuarios, putUsuarios, deleteUsuarios, errores}
 }
