@@ -59,7 +59,7 @@ export const AlumnosPage = () => {
         await fetchUsuarios();
         }
     }
-    if(!listaAlumnos.length) return <h2>No existen notas para mostrar</h2>
+
 
     return(
         <>
