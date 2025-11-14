@@ -1,17 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
-import { Link } from "react-router";
-import useAlumnos from "../../api/alumnos";
-import useMaterias from "../../api/materias";
-import useNotas from "../../api/notas";
 import Tabla from "../../components/Tabla/Tabla";
 import { useAuth } from "../../Auth/Auth";
 import { dominio } from "../../utils/dominio";
 
 export const NotasPage = () => {
     const url = `${dominio}/notas`
-    const { getAlumnos } = useAlumnos();
-    const { getMaterias } = useMaterias();
-    const { getNotas } = useNotas();
     const { fetchAuth } = useAuth();
 
     const [ listaAlumnos, setListaAlumnos ] = useState([]);
@@ -43,18 +36,21 @@ export const NotasPage = () => {
     const fetchParalelo = useCallback(async () => {
         try{
             const [nota, alumno, materia] = await Promise.all([
-                getNotas(),
-                getAlumnos(),
-                getMaterias(),
+                fetchAuth(`${dominio}/notas`),
+                fetchAuth(`${dominio}/alumnos`),
+                fetchAuth(`${dominio}/materias`)
             ])
 
-            if(!nota.success || !alumno.success || !materia.success ){
+            if(!nota.ok || !alumno.ok || !materia.ok ){
                 return console.error("Error al obtener datos.",nota, alumno, materia)
             }
+            const notas = await nota.json();
+            const alumnos = await alumno.json();
+            const materias = await materia.json();
             //Estado para las columnas y saco los id, nombre y codigo en este caso
             setColumnas( () =>{
-                const colum =  nota.columnasNota
-                .concat(alumno?.columnasAlumno , materia?.columnasMateria)
+                const colum =  notas.columnasNota
+                .concat(alumnos?.columnasAlumno , materias?.columnasMateria)
                 //Se saca lo repetido 
                 .filter(c => c !== "id" && c !== "nombre" && c !== "codigo")
                 //saca el _id
@@ -67,9 +63,9 @@ export const NotasPage = () => {
                 return colum
             })
             
-            setListaAlumnos(alumno.alumnos)
-            setListaMaterias(materia.materias)
-            setListaNotas(nota.notas)
+            setListaAlumnos(alumnos.alumnos)
+            setListaMaterias(materias.materias)
+            setListaNotas(notas.notas)
         }catch(err){
             console.error("Error al cargar datos", err);
         }
