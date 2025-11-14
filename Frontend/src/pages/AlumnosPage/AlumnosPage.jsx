@@ -45,15 +45,14 @@ export const AlumnosPage = () => {
     ,[])
 
     const handleQuitar = async (id) => {
-        if (window.confirm("¿Desea quitar el usuario?")) {
-        // Pedir a la api que quite el usuario
+        if (window.confirm("¿Desea quitar el alumno?")) {
         const response = await fetchAuth(`${url}/${id}`, {
             method: "DELETE",
         });
         const data = await response.json();
 
         if (!response.ok || !data.success) {
-            return window.alert("Error al quitar usuario");
+            return window.alert("Error al quitar alumno");
         }
 
         await fetchUsuarios();
