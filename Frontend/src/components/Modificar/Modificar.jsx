@@ -1,9 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../../Auth/Auth";
 import { useNavigate, useParams } from "react-router";
-import useNotas from "../../api/notas";
-import useAlumnos from "../../api/alumnos";
-import useMaterias from "../../api/materias";
 import { dominio } from "../../utils/dominio";
 import { Select } from "../Select/Select";
 
@@ -12,9 +9,6 @@ export const Modificar = () => {
   const { fetchAuth } = useAuth();
   const { id } = useParams();
   const {ruta} = useParams();
-  const { getNotas } = useNotas();
-  const { getAlumnos } = useAlumnos();
-  const { getMaterias } = useMaterias();
   //algo como: http://localhost:3000/api/alumnos/1
   const url = `${dominio}/${ruta}/${id}`;
   console.log("url",url)
@@ -30,17 +24,21 @@ export const Modificar = () => {
   const fetchData = useCallback(async () => {
     if("notas" === ruta){
       const [nota, alumno, materia] = await Promise.all([
-        getNotas(),
-        getAlumnos(),
-        getMaterias(),
+          fetchAuth(`${dominio}/notas`),
+          fetchAuth(`${dominio}/alumnos`),
+          fetchAuth(`${dominio}/materias`)
       ])
-      if(!nota.success || !alumno.success || !materia.success ){
-        return console.error("Error al obtener datos.",nota, alumno, materia)
+
+      if(!nota.ok || !alumno.ok || !materia.ok ){
+          return console.error("Error al obtener datos.",nota, alumno, materia)
       }
-      setColumnas(nota.columnasNota)
-      setValues(nota.notas[0])
-      setListaAlumnos(alumno.alumnos)
-      setListaMaterias(materia.materias)
+      const notas = await nota.json();
+      const alumnos = await alumno.json();
+      const materias = await materia.json();
+      setColumnas(notas.columnasNota)
+      setValues(notas.notas[0])
+      setListaAlumnos(alumnos.alumnos)
+      setListaMaterias(materias.materias)
       return
     }
 
@@ -160,7 +158,7 @@ export const Modificar = () => {
                   />
                   {errores?.filter(e => e.path === col.key)
                     .map((err, i) => (
-                      <small key={i} style={{ color: "red" }}>{err.msg}</small>
+                      <small key={i}>{err.msg}</small>
                     ))
                   }
                 </>
