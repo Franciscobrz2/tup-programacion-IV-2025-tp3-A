@@ -11,6 +11,7 @@ import { NotasPage } from './pages/NotasPage/NotasPage.jsx';
 import { AuthPage } from './Auth/Auth.jsx';
 import { LoginPage } from './pages/Auth/LoginPage.jsx';
 import { Modificar } from './components/Modificar/Modificar.jsx';
+import { Crear } from './components/Crear/Crear.jsx';
 
 createRoot(document.getElementById('root')).render(
   <AuthProvider>
@@ -52,8 +53,15 @@ createRoot(document.getElementById('root')).render(
                   <Modificar/>
                 </AuthPage>
               }
-            >
-            </Route>
+            />
+            <Route 
+              path="/:ruta/crear"
+              element={
+                <AuthPage>
+                  <Crear/>
+                </AuthPage>
+              }
+            />
           </Route>
    
         </Routes>
