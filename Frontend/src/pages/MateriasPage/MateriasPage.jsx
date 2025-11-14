@@ -29,7 +29,7 @@ export const MateriasPage = () => {
             return;
         }
         setColumnas(data.columnasMateria);
-        setListaMaterias(data.materias?.map(m => ({...m, año: m.año.split("-")[0]})));
+        setListaMaterias(data.materias);
         },
         [fetchAuth]
     );
@@ -57,7 +57,6 @@ export const MateriasPage = () => {
         [...acc,{key: col, th: col.charAt(0).toUpperCase() + col.slice(1)}]
     ,[])
 
-    if(!listaMaterias.length) return <h2>No existen materias para mostrar</h2>
 
     return(
         <>
