@@ -1,4 +1,5 @@
 import { db } from "../../config/db.js";
+import { limpiarValues } from "../../utils/limpiarValores.js";
 
 export async function getAllMaterias (req, res) {
     const filter = req.query.filter;
@@ -39,11 +40,12 @@ export async function getMateriaById (req, res) {
 
 export async function createMateria (req, res) {
     const { nombre, codigo } = req.body;
-    const año = new Date(req.body.año);
+    const año = Number(req.body.año);
+    console.log(nombre)
 
 
     const [resultMateria] = await db.execute("INSERT INTO materia (nombre, codigo, año) VALUES(?, ?, ?)" ,[
-        nombre, codigo, año
+        limpiarValues(nombre), codigo.trim().replaceAll("  ",""), año
     ]);
 
     if(resultMateria.affectedRows === 0){
@@ -64,12 +66,12 @@ export async function createMateria (req, res) {
 export async function updateMateria (req, res) {
     const id = Number(req.params.id);
     const { nombre, codigo } = req.body;
-    const año = new Date(req.body.año);
+    const año = Number(req.body.año);
 
     let sql = "UPDATE materia SET nombre = ?, codigo = ?, año = ? WHERE id = ?";
 
     const [resultMateria] = await db.execute(sql, [
-        nombre, codigo, año, id
+        limpiarValues(nombre), codigo, año, id
     ]);
 
     if(resultMateria.affectedRows === 0){
