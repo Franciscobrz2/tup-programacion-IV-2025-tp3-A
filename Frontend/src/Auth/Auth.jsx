@@ -9,10 +9,12 @@ export const useAuth = () => useContext(authContext);
 export const AuthProvider = ({children}) => {
     const [token, setToken] = useState(null);
     const [nombre, setNombre] = useState(null);
-    
+    const [error, setError] = useState(null);
+
     const login = async (registro) => {
+        setError(null);
         try{
-            const response = await fetch(`${dominio}/login`,{
+            const response = await fetch(`${dominio}/auth/login`,{
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(registro)
@@ -21,7 +23,8 @@ export const AuthProvider = ({children}) => {
             const session = await response.json();
 
             if(!response.ok && response.status === 400){
-                throw new Error(session.error);
+                setError(session.errors > 0 ? session.errors: session.errors);
+                throw new Error(session.errors);
             }
 
             setToken(session.token);
@@ -38,8 +41,14 @@ export const AuthProvider = ({children}) => {
     };
 
     const fetchAuth = async (url, options = {}) => {
+        if(!token){
+            throw Error("No inicio session")
+        }   
         return await fetch(url, 
-           { ...options},
+            // {...options}
+            { ...options,
+            headers: { ...options.headers, Authorization: `Bearer ${token}` }
+            },
         )
     }
     return (
@@ -48,8 +57,9 @@ export const AuthProvider = ({children}) => {
             nombre, 
             login, 
             logout,
-            isAuthenticated: !token,
+            isAuthenticated: !!token,
             fetchAuth,
+            error,
         }}>
             {children}
         </authContext.Provider>
