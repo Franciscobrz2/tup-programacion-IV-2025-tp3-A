@@ -2,18 +2,12 @@ import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../../Auth/Auth.jsx";
 import { useNavigate, useParams } from "react-router";
 import { dominio } from "../../utils/dominio.js";
-import useNotas from "../../api/notas.jsx";
-import useAlumnos from "../../api/alumnos.jsx";
-import useMaterias from "../../api/materias.jsx";
 import { Select } from "../Select/Select.jsx";
 
 export const Crear = () => {
   console.log("en crear")
   const { fetchAuth } = useAuth();
   const {ruta} = useParams();
-  const {getNotas } = useNotas();
-  const { getAlumnos } = useAlumnos();
-  const { getMaterias } = useMaterias();
   const navigate = useNavigate();
   const [errores, setErrores] = useState(null);
 
@@ -27,21 +21,25 @@ export const Crear = () => {
   const fetchData = useCallback(async () => {
     if("notas" === ruta){
       const [nota, alumno, materia] = await Promise.all([
-        getNotas(),
-        getAlumnos(),
-        getMaterias(),
+          fetchAuth(`${dominio}/notas`),
+          fetchAuth(`${dominio}/alumnos`),
+          fetchAuth(`${dominio}/materias`)
       ])
-      if(!nota.success || !alumno.success || !materia.success ){
-        return console.error("Error al obtener datos.",nota, alumno, materia)
+
+      if(!nota.ok || !alumno.ok || !materia.ok ){
+          return console.error("Error al obtener datos.",nota, alumno, materia)
       }
-      setColumnas(nota.columnasNota)
+      const notas = await nota.json();
+      const alumnos = await alumno.json();
+      const materias = await materia.json();
+      setColumnas(notas.columnasNota)
       setValues( () => {
-        return nota.columnasNota.reduce((acc,item) => (
+        return notas.columnasNota.reduce((acc,item) => (
           {...acc,[item]: ""}
         ),{}) 
       })
-      setListaAlumnos(alumno.alumnos)
-      setListaMaterias(materia.materias)
+      setListaAlumnos(alumnos.alumnos)
+      setListaMaterias(materias.materias)
       return
     }
 
@@ -109,7 +107,7 @@ export const Crear = () => {
       if (response.status === 400) {
         return setErrores(data.errors);
       }
-      return window.alert("Error al crear usuario");
+      return window.alert(`Error al crear ${ruta}` );
     }
     navigate(`/${ruta}`);
   };
@@ -166,7 +164,7 @@ export const Crear = () => {
                     />
                     {errores?.filter(e => e.path === col.key)
                       .map((err, i) => (
-                        <small key={i} style={{ color: "red" }}>{err.msg}</small>
+                        <small key={i}>{err.msg}</small>
                       ))
                     }
                   </>
