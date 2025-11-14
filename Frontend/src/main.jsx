@@ -10,6 +10,7 @@ import { MateriasPage } from './pages/MateriasPage/MateriasPage.jsx';
 import { NotasPage } from './pages/NotasPage/NotasPage.jsx';
 import { AuthPage } from './Auth/Auth.jsx';
 import { LoginPage } from './pages/Auth/LoginPage.jsx';
+import { RegisterPage } from './pages/Auth/RegisterPage.jsx';
 import { Modificar } from './components/Modificar/Modificar.jsx';
 import { Crear } from './components/Crear/Crear.jsx';
 
@@ -21,6 +22,7 @@ createRoot(document.getElementById('root')).render(
           <Route path='/' element={<Layout/>}> 
             <Route index element={<HomePage/>}/>
             <Route path='/login' element={<LoginPage/>}/>
+            <Route path='/register' element={<RegisterPage/>}/>
             
             <Route
               path="/alumnos" 
