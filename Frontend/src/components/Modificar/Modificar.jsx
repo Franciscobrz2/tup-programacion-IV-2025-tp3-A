@@ -12,7 +12,7 @@ export const Modificar = () => {
   const { fetchAuth } = useAuth();
   const { id } = useParams();
   const {ruta} = useParams();
-  const {getNotas } = useNotas();
+  const { getNotas } = useNotas();
   const { getAlumnos } = useAlumnos();
   const { getMaterias } = useMaterias();
   //algo como: http://localhost:3000/api/alumnos/1
@@ -25,8 +25,9 @@ export const Modificar = () => {
   const [columnas, setColumnas] = useState([]);
   const [listaMaterias, setListaMaterias] = useState([]);
   const [listaAlumnos, setListaAlumnos] = useState([]);
+  const [errores, setErrores] = useState(null);
 
-  const fetchUsuario = useCallback(async () => {
+  const fetchData = useCallback(async () => {
     if("notas" === ruta){
       const [nota, alumno, materia] = await Promise.all([
         getNotas(),
@@ -37,7 +38,7 @@ export const Modificar = () => {
         return console.error("Error al obtener datos.",nota, alumno, materia)
       }
       setColumnas(nota.columnasNota)
-      setValues(nota.notas)
+      setValues(nota.notas[0])
       setListaAlumnos(alumno.alumnos)
       setListaMaterias(materia.materias)
       return
@@ -54,18 +55,18 @@ export const Modificar = () => {
     //si en el back devuelve como data/columnas se saca el if
     if("alumnos" === ruta){
       console.log(data)
-      setValues(data.alumnos);
+      setValues(data.alumnos[0]);
       setColumnas(data.columnasAlumno);
     }else{
-      setValues(data.materias);
+      setValues(data.materias[0]);
       setColumnas(data.columnasMateria);
     }
     
   }, [fetchAuth, id]);
 
   useEffect(() => {
-    fetchUsuario();
-  }, [fetchUsuario]);
+    fetchData();
+  }, [fetchData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -80,7 +81,10 @@ export const Modificar = () => {
     const data = await response.json();
 
     if (!response.ok || !data.success) {
-      return window.alert(`Error al modificar ${ruta}`);
+      if (response.status === 400) {
+        console.error("->", data)
+        return setErrores(data.errors);
+      }
     }
 
     navigate(`/${ruta}`);
@@ -89,10 +93,16 @@ export const Modificar = () => {
   if (!values) {
     return null;
   }
-
+  
+  //crea un arreglo con objetos con key, label con nombre de las columnsa como valores
   const columnasProps = columnas?.reduce((acc, col) =>
-    [...acc,{key: col, label: col.includes("_id") ? (col.charAt(0).toUpperCase() + col.slice(1)).split("_id")[0] :col.charAt(0).toUpperCase() + col.slice(1)}]
-  ,[])
+      [...acc,{
+        key: col, 
+        //se pone mayuscula la primera letra y se saca el _id 
+        label: (col.charAt(0).toUpperCase() + col.slice(1)).split("_id")[0] }
+      ]
+    ,[]
+  )
   
   return (
     <article>
@@ -105,13 +115,56 @@ export const Modificar = () => {
               
               { col.key.includes("_id") ? 
               ( col.key.includes("alumno") ?
-              <Select key={i} lista={listaAlumnos}/>
+                <Select 
+                  keys={i} 
+                  lista={listaAlumnos}
+                  isSelected = {"Alumnos"} 
+                  onChange={(e) =>{
+                    let nuevoValues = {...values}
+                    nuevoValues= {...nuevoValues, [col.key]: e.target.value};
+                    setValues(nuevoValues);
+                  }} 
+                  error={errores?.find(e => e.path === col.key)?.msg}
+
+                />
               : 
-                <Select key={i} lista={listaMaterias}/>
+                <Select 
+                  keys={i} 
+                  lista={listaMaterias} 
+                  isSelected = {"Materias"} 
+                  onChange={(e) =>{
+                    let nuevoValues = {...values}
+                    nuevoValues= {...nuevoValues, [col.key]: e.target.value};
+                    setValues(nuevoValues);
+                  }}
+                  error={errores?.find(e => e.path === col.key)?.msg}
+
+                />
               ):
-              (<input key={i} required value={values[col.key]} onChange={(e) =>
-                setValues({ ...values, [col.key]: e.target.value })} 
-              />)
+              (
+                <>
+                  <input 
+                    key={i}
+                    disabled={ col.key === "id"? true : false} 
+                    required 
+                    value={values[col.key]} 
+                    onChange={(e) =>{
+                      let nuevoValues = {...values}
+                      nuevoValues= {...nuevoValues, [col.key]: e.target.value};
+                      setValues(nuevoValues);
+                    }} 
+                    aria-invalid={
+                      errores && errores.some((e) => e.path === col.key) 
+                    }
+
+                  />
+                  {errores?.filter(e => e.path === col.key)
+                    .map((err, i) => (
+                      <small key={i} style={{ color: "red" }}>{err.msg}</small>
+                    ))
+                  }
+                </>
+              )
               }
             </label>
           ))}
