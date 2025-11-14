@@ -7,9 +7,6 @@ export const Select = ({lista,keys, onChange, isSelected, error}) => {
                 key={keys}
                 onChange={onChange}
                 aria-invalid={!!error}
-                style={{
-                    borderColor: error ? "red" : undefined
-                }}
             >
                 <option value="" hidden >{isSelected}</option>
                 {lista.map( item => (
@@ -22,7 +19,7 @@ export const Select = ({lista,keys, onChange, isSelected, error}) => {
                 ))}
             </select>
             {error && (
-                <small style={{ color: "red" }}>{error}</small>
+                <small>{error}</small>
             )}
         </>
     );
