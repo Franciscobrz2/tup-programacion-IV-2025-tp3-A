@@ -4,10 +4,10 @@ import { db } from "../../config/db.js";
 export const validarNota = [
     body('alumno_id')
         .isInt({min: 1})
-        .withMessage('El id referenciado de alumno_id debe ser un numero entero positivo.'),
+        .withMessage('Las notas deben tener un alumno.'),
     body('materia_id')
         .isInt({min: 1})
-        .withMessage('El id referenciado de materia_id debe ser un numero entero positivo.')
+        .withMessage('Las notas deben tener una materia.')
         .custom(async (materia_id,{req}) => {
          
             const [existe] = await db.execute(
@@ -27,6 +27,10 @@ export const validarNota = [
                     req.body.alumno_id, materia_id
                 ]
             )
+            //no existe salta y se inserta las notas
+            if(existe.length === 0){
+                return true
+            }
             const nota1 = Number(existe[0].nota1) 
             const nota2 = Number(existe[0].nota2)
             const nota3 = Number(existe[0].nota3)
@@ -48,18 +52,18 @@ export const validarNota = [
             const apellido = existe[0]?.apellido
             const materia = existe[0]?.materia
             if(existe.length > 0){
-                throw Error(`La notas de [${alumno} ${apellido}] ya estan cargadas en ${materia}`)
+                throw Error(`La notas de "${alumno} ${apellido}" ya estan cargadas en ${materia}.`)
             }
         }),
     body('nota1')
-        .isFloat({min: 1, max: 10})
-        .withMessage('La nota1 debe ser un numero en la escala del 1 a 10'),
+        .isFloat({min: 0, max: 10})
+        .withMessage('La nota1 debe ser un numero en la escala del 0 a 10'),
     body('nota2')
-        .isFloat({min: 1, max: 10})
-        .withMessage('La nota2 debe ser un numero en la escala del 1 a 10'),
+        .isFloat({min: 0, max: 10})
+        .withMessage('La nota2 debe ser un numero en la escala del 0 a 10'),
     body('nota3')
-        .isFloat({min: 1, max: 10})
-        .withMessage('La nota3 debe ser un numero en la escala del 1 a 10'),
+        .isFloat({min: 0, max: 10})
+        .withMessage('La nota3 debe ser un numero en la escala del 0 a 10'),
   
 ]
 
