@@ -36,7 +36,7 @@ export async function getUsuariosById (req, res) {
 export async function createUsuario (req, res) {
     const { nombre, email, password } = req.body
     
-    const password_hash = await bcrypt.hash(password, 14);
+    const password_hash = await bcrypt.hash(password, 12);
 
     const [resultUsuario] = await db.execute("INSERT INTO usuario (nombre, email, password_hash) VALUES(?, ?, ?)" ,[
         nombre, email, password_hash
@@ -64,7 +64,7 @@ export async function updateUsuario (req, res) {
     let parametro = [];
     if(password && nueva_password){
         sql += " password_hash = ? ";
-        const password_hash = await bcrypt.hash(nueva_password,9);
+        const password_hash = await bcrypt.hash(nueva_password,12);
         parametro.push(password_hash)
     }else{
         sql += " nombre = ?";
