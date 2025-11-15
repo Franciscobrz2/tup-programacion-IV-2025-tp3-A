@@ -11,7 +11,7 @@ export const MateriasPage = () => {
     const {fetchAuth} = useAuth()
     const [buscar, setBuscar] = useState("");
 
-    const fetchUsuarios = useCallback(
+    const fetchMaterias = useCallback(
         async (buscar) => {
         const searchParams = new URLSearchParams();
 
@@ -36,8 +36,8 @@ export const MateriasPage = () => {
     );
 
     useEffect(() => {
-        fetchUsuarios();
-    }, [fetchUsuarios]);
+        fetchMaterias();
+    }, [fetchMaterias]);
 
     const handleQuitar = async (id) => {
         const response = await fetchAuth(`${url}/${id}`, {
@@ -49,7 +49,7 @@ export const MateriasPage = () => {
             return window.alert("Error al quitar materia");
         }
 
-        await fetchUsuarios();
+        await fetchMaterias();
         
     }
     const materiasColumnas = columnas?.reduce((acc, col) =>
@@ -62,7 +62,7 @@ export const MateriasPage = () => {
             <h1>lista de materias</h1>
             <div className="group">
                 <input value={buscar} onChange={(e) => setBuscar(e.target.value)} />
-                <button onClick={() => fetchUsuarios(buscar)}>Buscar</button>
+                <button onClick={() => fetchMaterias(buscar)}>Buscar</button>
             </div>
             <Tabla 
                 columnas={materiasColumnas} 

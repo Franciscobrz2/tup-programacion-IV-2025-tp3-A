@@ -12,7 +12,7 @@ export const AlumnosPage = () => {
     const {fetchAuth} = useAuth();
     const [buscar, setBuscar] = useState("");
 
-    const fetchUsuarios = useCallback(
+    const fetchAlumnos = useCallback(
         async (buscar) => {
         const searchParams = new URLSearchParams();
 
@@ -38,8 +38,8 @@ export const AlumnosPage = () => {
     );
 
     useEffect(() => {
-        fetchUsuarios();
-    }, [fetchUsuarios]);
+        fetchAlumnos();
+    }, [fetchAlumnos]);
 
     const alumnosColumnas = columnas?.reduce((acc, col) =>
         [...acc,{key: col, th: col.charAt(0).toUpperCase() + col.slice(1)}]
@@ -56,7 +56,7 @@ export const AlumnosPage = () => {
             return window.alert("Error al quitar alumno");
         }
 
-        await fetchUsuarios();
+        await fetchAlumnos();
         
     }
 
@@ -72,7 +72,7 @@ export const AlumnosPage = () => {
                 onChange={(e) => setBuscar(e.target.value)}
             />
             
-            <button className= "busqueda"onClick={() => fetchUsuarios(buscar)}>
+            <button className= "busqueda"onClick={() => fetchAlumnos(buscar)}>
                 Buscar
             </button>
             </div>
