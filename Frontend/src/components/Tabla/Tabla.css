@@ -1,0 +1,44 @@
+/* Contenedor principal */
+/* .tabla-container {
+  margin: 1.5rem auto;
+  max-width: 1000px;
+  padding: 1rem;
+} */
+
+/* Botón de crear */
+.tabla-crear-btn {
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+/* Tabla estructurada */
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla thead th {
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.tabla tbody td {
+  padding: 0.5rem;
+  vertical-align: middle;
+}
+
+/* Fila con acciones */
+.tabla-acciones {
+  white-space: nowrap;
+}
+
+/* Espaciado entre botones dentro de la tabla */
+.tabla-acciones a,
+.tabla-acciones button {
+  margin-right: 0.5rem;
+}
+
+/* Opcional: separación entre filas para mejor lectura */
+.tabla tbody tr {
+  border-bottom: 1px solid var(--pico-muted-border-color);
+}
