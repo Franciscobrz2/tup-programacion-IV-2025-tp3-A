@@ -1,0 +1,30 @@
+/* Contenedor general */
+.alumnos-container {
+  max-width: 900px;
+  margin: 1.5rem auto;
+  padding: 1rem;
+}
+
+/* Título */
+.title {
+  margin-bottom: 1rem;
+}
+
+/* Grupo de búsqueda EN FILA */
+.group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem; /* espacio entre input y botón */
+  margin-bottom: 1.5rem;
+}
+
+/* Input ocupa todo el espacio disponible */
+.busqueda input {
+  flex: 1;
+}
+
+/* Botón siempre visible y alineado */
+.busqueda button {
+  white-space: nowrap;
+}
