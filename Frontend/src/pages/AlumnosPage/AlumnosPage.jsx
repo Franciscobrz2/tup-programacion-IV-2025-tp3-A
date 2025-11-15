@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import Tabla from "../../components/Tabla/Tabla";
 import { useAuth } from "../../Auth/Auth";
 import { dominio } from "../../utils/dominio";
+import "../Page.css"
 const url = `${dominio}/alumnos`
 
 export const AlumnosPage = () => {
@@ -45,7 +46,7 @@ export const AlumnosPage = () => {
     ,[])
 
     const handleQuitar = async (id) => {
-        if (window.confirm("¿Desea quitar el alumno?")) {
+        
         const response = await fetchAuth(`${url}/${id}`, {
             method: "DELETE",
         });
@@ -56,18 +57,31 @@ export const AlumnosPage = () => {
         }
 
         await fetchUsuarios();
-        }
+        
     }
 
 
     return(
         <>
-            <h1>lista de alumnos</h1>
+            <h1 className="title">Lista de alumnos</h1>
+
             <div className="group">
-                <input value={buscar} onChange={(e) => setBuscar(e.target.value)} />
-                <button onClick={() => fetchUsuarios(buscar)}>Buscar</button>
+            <input
+                className="busqueda"
+                value={buscar}
+                onChange={(e) => setBuscar(e.target.value)}
+            />
+            
+            <button className= "busqueda"onClick={() => fetchUsuarios(buscar)}>
+                Buscar
+            </button>
             </div>
-            <Tabla columnas={alumnosColumnas} lista={listaAlumnos} handleQuitar={handleQuitar}/>
+
+            <Tabla
+            columnas={alumnosColumnas}
+            lista={listaAlumnos}
+            handleQuitar={handleQuitar}
+            />
         </>
     );
 }

@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import Tabla from "../../components/Tabla/Tabla";
 import { useAuth } from "../../Auth/Auth.jsx";
 import { dominio } from "../../utils/dominio.js";
+import "../Page.css"
 const url = `${dominio}/materias`
 
 export const MateriasPage = () => {
@@ -39,7 +40,6 @@ export const MateriasPage = () => {
     }, [fetchUsuarios]);
 
     const handleQuitar = async (id) => {
-        if (window.confirm("¿Desea quitar el materia?")) {
         const response = await fetchAuth(`${url}/${id}`, {
             method: "DELETE",
         });
@@ -50,7 +50,7 @@ export const MateriasPage = () => {
         }
 
         await fetchUsuarios();
-        }
+        
     }
     const materiasColumnas = columnas?.reduce((acc, col) =>
         [...acc,{key: col, th: col.charAt(0).toUpperCase() + col.slice(1)}]
@@ -64,7 +64,11 @@ export const MateriasPage = () => {
                 <input value={buscar} onChange={(e) => setBuscar(e.target.value)} />
                 <button onClick={() => fetchUsuarios(buscar)}>Buscar</button>
             </div>
-            <Tabla columnas={materiasColumnas} lista={listaMaterias}  handleQuitar={handleQuitar}/>
+            <Tabla 
+                columnas={materiasColumnas} 
+                lista={listaMaterias}  
+                handleQuitar={handleQuitar}
+            />
         </>
     );
 }
