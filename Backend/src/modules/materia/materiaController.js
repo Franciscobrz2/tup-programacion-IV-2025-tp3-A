@@ -2,11 +2,41 @@ import { db } from "../../config/db.js";
 import { limpiarValues } from "../../utils/limpiarValores.js";
 
 export async function getAllMaterias (req, res) {
-    const filter = req.query.filter;
-    const [resultMateria, tabla] = await db.execute("SELECT * FROM materia");
+    const { buscar } = req.query;
 
-    const columnasMateria = tabla.map( t => t.name)
-    res.json({
+    if (!buscar) {
+        const [resultMateria, tabla] = await db.execute("SELECT * FROM materia");
+
+        const columnasMateria = tabla.map(t => t.name);
+
+        return res.json({
+            success: true,
+            materias: resultMateria,
+            columnasMateria
+        });
+    }
+
+    const sql = `
+        SELECT * FROM materia
+        WHERE 
+            id LIKE ?
+            OR nombre LIKE ?
+            OR codigo LIKE ?
+            OR año LIKE ?
+    `;
+
+    const parametros = [
+        `%${buscar}%`,
+        `%${buscar}%`,
+        `%${buscar}%`,
+        `%${buscar}%`,
+    ];
+
+    const [resultMateria, tabla] = await db.execute(sql, parametros);
+
+    const columnasMateria = tabla.map(t => t.name);
+
+    return res.json({
         success: true,
         materias: resultMateria,
         columnasMateria
