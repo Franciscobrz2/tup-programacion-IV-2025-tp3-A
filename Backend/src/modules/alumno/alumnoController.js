@@ -1,14 +1,42 @@
 import { db } from "../../config/db.js";
-
+import { limpiarValues } from "../../utils/limpiarValores.js";
 export async function getAllAlumnos (req, res) {
-    const filter = req.query.filter;
-    const [resultAlumno, tabla] = await db.execute("SELECT * FROM alumno");
-   
-    const columnasAlumno = tabla.map(t => {
-        return t.name
-    })
+    const {buscar} = req.query;
 
-    res.json({
+    if(!buscar){
+        const [resultAlumno, tabla] = await db.execute("SELECT * FROM alumno");
+   
+        const columnasAlumno = tabla.map(t => {
+            return t.name
+        })
+
+        return res.json({
+            success: true,
+            alumnos: resultAlumno,
+            columnasAlumno
+        });
+    }
+
+   const sql = `
+        SELECT * FROM alumno
+        WHERE 
+            id LIKE ?
+            OR nombre LIKE ?
+            OR apellido LIKE ?
+            OR dni LIKE ?
+    `;
+
+    const parametros = [
+        `%${buscar}%`,
+        `%${buscar}%`,
+        `%${buscar}%`,
+        `%${buscar}%`,
+    ];
+
+    const [resultAlumno, tabla] = await db.execute(sql, parametros);
+    const columnasAlumno = tabla.map(t => t.name);
+
+    return res.json({
         success: true,
         alumnos: resultAlumno,
         columnasAlumno
@@ -47,7 +75,7 @@ export async function createAlumno (req, res) {
 
 
     const [resultAlumno] = await db.execute("INSERT INTO alumno (nombre, apellido, dni) VALUES(?, ?, ?)" ,[
-        nombre, apellido, dni
+        limpiarValues(nombre), limpiarValues(apellido), dni
     ]);
 
     if(resultAlumno.affectedRows === 0){
@@ -73,7 +101,7 @@ export async function updateAlumno (req, res) {
     let sql = "UPDATE alumno SET nombre = ?, apellido = ?, dni = ? WHERE id = ?";
 
     const [resultAlumno] = await db.execute(sql, [
-        nombre, apellido, dni, id
+        limpiarValues(nombre), limpiarValues(apellido), dni, id
     ]);
 
     if(resultAlumno.affectedRows === 0){
