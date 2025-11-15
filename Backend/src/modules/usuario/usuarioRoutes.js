@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get("/", verificarAutenticacion, getAllUsuarios);
 router.get("/:id", verificarAutenticacion, validarId("id"), verificarValidacion, getUsuariosById);
-router.post("/", verificarAutenticacion, validarUsuario, verificarValidacion, createUsuario);
+router.post("/", validarUsuario, verificarValidacion, createUsuario);
 router.put("/:id", verificarAutenticacion, validarUsuarioPut, validarId("id"), verificarValidacion, updateUsuario);
 router.delete("/:id", verificarAutenticacion, validarId("id"), verificarValidacion, deleteUsuario);
 
