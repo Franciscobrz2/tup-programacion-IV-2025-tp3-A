@@ -1,10 +1,12 @@
 import { useState } from "react";
 import {Link} from "react-router";
 import useUsuarios from "../../api/usuarios.jsx";
+import { useNavigate } from "react-router";
+
 export const RegisterPage = () => {
   const { postUsuarios, errores } = useUsuarios();
   // const [errores, setErrores] = useState(null);
-
+  const navigate = useNavigate();
   const valoresIniciales = {
     nombre: "",
     email: "",
