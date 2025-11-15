@@ -2,13 +2,13 @@ import "./HomePage.css";
 import { GraduationCap } from "lucide-react"
 import { useAuth } from "../../Auth/Auth";
 export const HomePage = () => {
-  const {isAuthenticated} = useAuth();
+  const {isAuthenticated, nombre} = useAuth();
   return (
     <div className="homepage-container">
       <h1>Sistema de Gestión de Alumnos</h1>
         <GraduationCap className="homepage-logo"/>
       <div className="homepage-content">
-        <h2>¡Bienvenido!</h2>
+        <h2>¡Bienvenido {nombre}!</h2>
         <p>
           Le damos la bienvenida al <strong>Sistema de Gestión de Alumnos</strong>, una herramienta diseñada para facilitar la administración académica de su institución.
         </p>
