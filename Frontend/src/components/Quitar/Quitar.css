@@ -1,0 +1,40 @@
+/* --- Estructura general --- */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+/* Separación entre secciones */
+section,
+article {
+  margin-bottom: 1.5rem;
+}
+
+/* --- Botones --- */
+button {
+  margin: 0.25rem 0.4rem; /* pequeño espacio entre botones */
+}
+
+/* Para asegurar que los botones dentro del dialog estén separados */
+dialog article button {
+  margin-right: 0.5rem;
+}
+
+/* --- Diálogo --- */
+dialog {
+  padding: 0;
+}
+
+dialog article {
+  padding: 1rem 1.2rem;
+}
+
+/* espacio entre título y texto */
+dialog h1 {
+  margin-bottom: 0.5rem;
+}
+
+.QuitarButton {
+  margin-top: 0.5rem;
+}
