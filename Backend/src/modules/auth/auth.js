@@ -11,7 +11,7 @@ export function authConfig() {
   }
 
   passport.use(
-    new Strategy(jwtOptions, async () => {
+    new Strategy(jwtOptions, async (payload, next) => {
         next(null, payload)
     })
   );
@@ -34,7 +34,7 @@ export async function authLogin (req, res) {
   if (usuarios.length === 0) {
     return res
     .status(400)
-    .json({ success: false, error: "Usuario inválido" });
+    .json({ success: false, errors: [{session: "Usuario invalido"}] });
   }
 
   // Verificar la contraseña
@@ -45,7 +45,7 @@ export async function authLogin (req, res) {
   if (!passwordComparada) {
     return res
     .status(400)
-    .json({ success: false, error: "Contraseña inválido" });
+    .json({ success: false, errors: [{session: "Usuario invalido"}] });
   }
 
 
