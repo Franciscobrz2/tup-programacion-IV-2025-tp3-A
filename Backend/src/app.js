@@ -6,6 +6,7 @@ import alumnoRouter from "./modules/alumno/alumnoRoutes.js";
 import materiaRouter from "./modules/materia/materiaRoutes.js";
 import notaRouter from "./modules/nota/notasRoutes.js";
 import authRouter from "./modules/auth/authRoutes.js";
+import { authConfig } from "./modules/auth/auth.js";
 conectarDB();
 
 const app = express();
@@ -13,6 +14,9 @@ const port = 3000;
 
 //habilitar cors
 app.use(cors())
+
+authConfig();
+
 // Para interpretar body como JSON
 app.use(express.json());
 
