@@ -1,5 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import "./index.css"
 import "@picocss/pico";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router";
 import { Layout } from "./components/Layout/Layout.jsx";
